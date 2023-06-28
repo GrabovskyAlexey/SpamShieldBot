@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  postgres-bot-dev:
+    image: postgres:latest
+    domainname: postgres_auth
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: spam_shield_bot
+  redis:
+    image: redis:latest
+    environment:
+      ALLOW_EMPTY_PASSWORD: "true"
+    ports:
+      - "6379:6379"
