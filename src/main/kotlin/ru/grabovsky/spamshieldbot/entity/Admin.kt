@@ -8,17 +8,21 @@ import java.time.Instant
 @Entity
 @Table(name = "admins")
 data class Admin(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id :Long? = null
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null
 ) {
     @Column(name = "username", nullable = false)
-    lateinit var username : String
+    lateinit var username: String
 
     @Column(name = "tg_user_id", nullable = false)
-    var userId : Long = 0
+    var userId: Long = 0
 
-    @ManyToOne
-    @JoinColumn(name = "int_chat_id", nullable = false)
-    lateinit var chat: Chat;
+    @ManyToMany(cascade = [CascadeType.MERGE])
+    @JoinTable(
+        name = "chats_admins",
+        joinColumns = [JoinColumn(name = "admin_id")] ,
+        inverseJoinColumns = [JoinColumn(name = "chat_id")]
+    )
+    val chats: MutableSet<Chat> = mutableSetOf();
 
     @Column(name = "created_at")
     @CreationTimestamp
