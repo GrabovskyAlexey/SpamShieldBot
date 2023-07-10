@@ -1,4 +1,4 @@
-package ru.grabovsky.spamshieldbot.entity
+package ru.grabovsky.spamshieldbot.rules
 
 import ru.grabovsky.spamshieldbot.matchers.RegExpMatcher
 import ru.grabovsky.spamshieldbot.matchers.WordMatcher

@@ -3,11 +3,9 @@ package ru.grabovsky.spamshieldbot.bot
 import org.springframework.stereotype.Component
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage.DeleteMessageBuilder
 import org.telegram.telegrambots.meta.api.objects.Update
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberLeft
 import ru.grabovsky.spamshieldbot.config.BotConfig
-import ru.grabovsky.spamshieldbot.exceptions.IncorrectCommandException
 import ru.grabovsky.spamshieldbot.exceptions.TelegramBotException
 import ru.grabovsky.spamshieldbot.handlers.interfaces.TelegramBotHandler
 import ru.grabovsky.spamshieldbot.utils.getLogger
@@ -28,16 +26,15 @@ class TelegramMainBot(
 
     override fun onUpdateReceived(update: Update) {
         try {
-            when (val handle = handler.handle(update)) {
-                is SendMessage -> execute(handle)
+            val handle = handler.handle(update)
+            if(handle.isNotEmpty()) {
+                handle.delete?.let { execute(it) }
+                handle.message?.let { execute(it) }
+                handle.userBanned?.let { execute(it) }
             }
         } catch (e: TelegramBotException) {
             sendErrorMessage(e)
         }
-//        val deleteMessage = DeleteMessage()
-//        deleteMessage.chatId = update.message.chatId.toString()
-//        deleteMessage.messageId = update.message.messageId
-//        execute(deleteMessage)
     }
 
     private fun sendErrorMessage(e: TelegramBotException) {
@@ -46,5 +43,11 @@ class TelegramMainBot(
             .chatId(e.chatId)
             .build()
         )
+    }
+
+    private fun removeMemberAndDeleteMessage() {
+        ChatMemberLeft.builder()
+//            .user()
+            .build()
     }
 }
