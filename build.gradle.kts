@@ -34,6 +34,7 @@ dependencies {
 	implementation("org.telegram:telegrambots-spring-boot-starter:6.7.0")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("org.apache.opennlp:opennlp-tools:2.2.0")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	implementation("org.flywaydb:flyway-core")
